@@ -1,9 +1,10 @@
 // User parameters
-drool = 0.3; // Extra material to account for 3D printing inaccuracies
+drool = 0.25; // Extra material to account for 3D printing inaccuracies
 beam_length_units = 3; // Beam length in LEGO units (1 unit = 8mm)
 
 // Parameter definitions
 technic_hole_diameter = 4.9; // Diameter for Technic pin holes, adjusted for 3D printing
+extremity_hole_diameter = 5.9; // Diameter for extremity holes, adjusted for 3D printing
 beam_width = 8; // Standard Technic beam width
 beam_height = 8; // Standard Technic beam height
 round_radius = beam_width / 2; // Radius for the rounded ends, typically half the beam width
@@ -11,7 +12,13 @@ round_radius = beam_width / 2; // Radius for the rounded ends, typically half th
 // Module for a LEGO Technic pin hole
 // Diameter adjusted for 3D printing (e.g., 4.9 mm)
 module technic_hole() {
-  cylinder(d = technic_hole_diameter + 2*drool, h = beam_height + 2, $fn = 50, center = true); 
+  union() {
+    translate([0, 0, beam_height / 2])
+      cylinder(d = extremity_hole_diameter + 2*drool, h = 2, $fn = 50, center = true);
+    translate([0, 0, -beam_height / 2])
+      cylinder(d = extremity_hole_diameter + 2*drool, h = 2, $fn = 50, center = true);
+  }
+  cylinder(d = technic_hole_diameter + 2*drool, h = beam_height + 2, $fn = 50, center = true);
 }
 
 // Module for a LEGO Technic beam with rounded ends, centered at the origin
