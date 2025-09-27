@@ -46,19 +46,45 @@ module technic_beam(length_units) {
 }
 
 // The dimensions are fully customizable
-module square_mount(side = 7, hole_diameter = 3, height = 2) {
+
+// Old square mount module with straight cylindrical hole
+// module square_mount(side = 6, hole_diameter = 3, height = 2) {
+//   join_margin = 0.5; // Margin to ensure the hole doesn't touch the edges
+//   translate([0, 0, height / 2]) {
+//     difference() {
+//         // Base of the mount
+//         translate([0,-join_margin/2,0])
+//           cube([side, side+join_margin, height], center = true);
+        
+//         // A cylinder for the hole
+//         cylinder(d = hole_diameter+drool*2, h = height + 2, $fn = 50, center = true);
+//     }
+//   }
+//     // The final shape is the base minus the hole
+// }
+
+module square_mount(side = 6, hole_diameter = 3, height = 2) {
   join_margin = 0.5; // Margin to ensure the hole doesn't touch the edges
+  screw_head_diameter = 6; // Diameter for the countersink (for a typical 3mm screw head)
+  countersink_height = 2; // Height of the countersink
+
   translate([0, 0, height / 2]) {
     difference() {
         // Base of the mount
         translate([0,-join_margin/2,0])
           cube([side, side+join_margin, height], center = true);
         
-        // A cylinder for the hole
-        cylinder(d = hole_diameter+drool*2, h = height + 2, $fn = 50, center = true);
+        // The union of shapes to subtract from the mount's base
+        union() {
+          // 1. The main hole for the screw shaft
+          cylinder(d = hole_diameter + 2*drool, h = height + 2, $fn = 50, center = true);
+          
+          // 2. The countersink for the screw head
+          translate([0, 0, (height / 2) - countersink_height])
+            cylinder(d1 = hole_diameter + 2*drool, d2 = screw_head_diameter, h = countersink_height + 2, $fn = 50);
+        }
     }
   }
-    // The final shape is the base minus the hole
 }
 
 // Final part creation
@@ -78,6 +104,7 @@ union() {
 
   // 3. Placing the new square mount on top of the beam
   // We adjust the Z-position to place it at the top surface
-  translate([0, beam_width/2 + 3.5, -beam_height / 2])
-      square_mount(side = 7, hole_diameter = 3, height = 2);
+  square_side = 6; // Side length of the square mount
+  translate([0, beam_width/2 + square_side/2, -beam_height / 2])
+      square_mount(side = square_side, hole_diameter = 3, height = 2);
 }
