@@ -45,16 +45,39 @@ module technic_beam(length_units) {
   }
 }
 
-// Final part creation
-difference() {
-  // 1. The base beam, now properly centered at the origin
-  technic_beam(beam_length_units);
-
-  // 2. Drilling the holes in a loop
-  for (i = [0 : beam_length_units - 1]) {
-    // Position of each hole, relative to the beam's center
-    // We adjust the x-position to get to the first hole, then add 8mm for each subsequent hole
-    translate([ -((beam_length_units - 1) * 8) / 2 + (i * 8), 0, 0]) 
-      technic_hole();
+// The dimensions are fully customizable
+module square_mount(side = 7, hole_diameter = 3, height = 2) {
+  join_margin = 0.5; // Margin to ensure the hole doesn't touch the edges
+  translate([0, 0, height / 2]) {
+    difference() {
+        // Base of the mount
+        translate([0,-join_margin/2,0])
+          cube([side, side+join_margin, height], center = true);
+        
+        // A cylinder for the hole
+        cylinder(d = hole_diameter+drool*2, h = height + 2, $fn = 50, center = true);
+    }
   }
+    // The final shape is the base minus the hole
+}
+
+// Final part creation
+union() {
+  difference() {
+    // 1. The base beam, now properly centered at the origin
+    technic_beam(beam_length_units);
+
+    // 2. Drilling the holes in a loop
+    for (i = [0 : beam_length_units - 1]) {
+      // Position of each hole, relative to the beam's center
+      // We adjust the x-position to get to the first hole, then add 8mm for each subsequent hole
+      translate([ -((beam_length_units - 1) * 8) / 2 + (i * 8), 0, 0]) 
+        technic_hole();
+    }
+  }
+
+  // 3. Placing the new square mount on top of the beam
+  // We adjust the Z-position to place it at the top surface
+  translate([0, beam_width/2 + 3.5, -beam_height / 2])
+      square_mount(side = 7, hole_diameter = 3, height = 2);
 }
