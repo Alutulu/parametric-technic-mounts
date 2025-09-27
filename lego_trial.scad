@@ -1,10 +1,11 @@
 // Parameter definitions
 beam_length = 3; // Beam of 3 units (3 x 8mm)
+drool = 0.5; // When needs precision, take into account this horizontal excess of PLA in your printer
 
 // Module for a LEGO Technic pin hole
 // Diameter adjusted for 3D printing (e.g., 4.9 mm)
 module technic_hole() {
-  cylinder(d = 4.9, h = 10, $fn = 50); 
+  cylinder(d = 4.9 + 2*drool, h = 10, $fn = 50); 
 }
 
 // Module for a LEGO Technic beam
