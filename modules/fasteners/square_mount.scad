@@ -14,10 +14,10 @@ module square_mount(side = 6, hole_diameter = 3, height = 2, is_on_top = false, 
   translate([0, mount_y_offset, mount_z_offset]) {
 
     difference() {
-      margin_y_offset = is_on_left ? join_margin/2 : -join_margin/2;
+      margin_y_offset = is_on_left ? -(side/2-(side+beam_width/2)/2) : side/2-(side+beam_width/2)/2;
       // Base of the mount
       translate([0,margin_y_offset,0])
-        cube([side, side + join_margin, height], center = true);
+        cube([side, side + beam_width/2, height], center = true);
         
       // The union of shapes to subtract from the mount's base
       union() {
