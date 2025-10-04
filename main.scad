@@ -5,13 +5,14 @@ include <./parameters.scad>
 include <./modules/technic_base.scad>
 include <./modules/fasteners/technic_hole.scad>
 include <./modules/fasteners/square_mount.scad>
+include <./modules/peg_plate.scad>
 
 // USER PARAMETERS
-beam_length_units = 6;
+beam_length_units = 4;
 mount_side = 6;
 mount_hole_diameter = 3;
 mount_height = 2;
-mount_positions_x = [-37/2, +37/2]; // from x=0 (middle of the beam)
+mount_positions_x = [-8]; // from x=0 (middle of the beam)
 
 // FINAL ASSEMBLY
 difference() {
