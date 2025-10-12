@@ -25,6 +25,7 @@ peg_length = 20;
 // CORNER PARAMETERS
 corner_thickness = 2.5;
 corner_length = 12;
+corner_round_radius = 3.2;
 
 
 
@@ -55,7 +56,9 @@ difference() {
   // 3. Cubic corners
   // rotate([0,0,0])
   translate([-corner_length/2,beam_width/2 - join_margin,-beam_height/2])
-    corner_mount(length = corner_length, thickness = corner_thickness);
+    rotate([0,0,90])
+    translate([0,-corner_length,0])
+    corner_mount(length = corner_length, thickness = corner_thickness, round_radius=corner_round_radius);
 
 
 

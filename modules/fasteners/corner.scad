@@ -8,7 +8,7 @@ include <../../parameters.scad>
  * * @param length The side length of the square plates (excluding thickness).
  * @param thickness The uniform thickness of all three plates.
  */
-module corner_mount(length = 20, thickness = 5) {
+module corner_mount(length = 20, thickness = 5, round_radius = 4) {
     
     // Safety check to ensure positive dimensions
     if (length > 0 && thickness > 0) {
@@ -20,14 +20,22 @@ module corner_mount(length = 20, thickness = 5) {
             
             // 2. Plate on the X-Y plane (the "base")
             // Extends along X and Y, starting from the corner block's edge.
-            translate([0, 0, 0])
+            union() {
+                translate([thickness, thickness, 0]) {
+                    difference() {
+                        cube([round_radius, round_radius, length], center = false);
+                        translate([round_radius, round_radius, (thickness + length) / 2])
+                        cylinder(d = round_radius*2, h = length - thickness + join_margin*2, $fn = 50, center = true);
+                    }
+                }
+
                 cube([length, length, thickness], center = false);
             
-            translate([0, 0, 0])
                 cube([length, thickness, length], center = false);
             
-            translate([0, 0, 0])
                 cube([thickness, length, length], center = false);
+
+            }
             
             // 3. Plate on the X-Z plane (the "back")
             // Extends along X and Z, starting from the corner block's edge.
