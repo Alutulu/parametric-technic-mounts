@@ -9,11 +9,11 @@ include <./modules/peg_plate.scad>
 include <./modules/fasteners/corner.scad>
 
 // USER PARAMETERS
-beam_length_units = 3;
-mount_side = 4.3;
+beam_length_units = 9;
+mount_side = 5.5;
 mount_hole_diameter = 3;
 mount_height = 2;
-mount_positions_x = [0]; // from x=0 (middle of the beam)
+mount_positions_x = [-58.8/2, +58.8/2]; // from x=0 (middle of the beam)
 
 // USER PARAMETERS
 peg_plate_length = 10;
@@ -41,24 +41,24 @@ difference() {
   // 1. The base beam
     technic_beam(beam_length_units);
     // 2. Placing the square mount on the beam
-    // for (pos_x = mount_positions_x) {
-    //   translate([pos_x, 0 , 0])
-    //     square_mount(
-    //       side = mount_side, 
-    //       hole_diameter = mount_hole_diameter, 
-    //       height = mount_height,
-    //       y_extension=2,
-    //       is_on_top=false,
-    //       is_on_left=true
-    //     );
-    // }
+    for (pos_x = mount_positions_x) {
+      translate([pos_x, 0 , 0])
+        square_mount(
+          side = mount_side, 
+          hole_diameter = mount_hole_diameter, 
+          height = mount_height,
+          y_extension=2,
+          is_on_top=false,
+          is_on_left=true
+        );
+    }
 
   // 3. Cubic corners
   // rotate([0,0,0])
-  translate([-corner_length/2,beam_width/2 - join_margin,-beam_height/2])
-    rotate([0,0,90])
-    translate([0,-corner_length,0])
-    corner_mount(length = corner_length, thickness = corner_thickness, round_radius=corner_round_radius);
+  // translate([-corner_length/2,beam_width/2 - join_margin,-beam_height/2])
+  //   rotate([0,0,90])
+  //   translate([0,-corner_length,0])
+  //   corner_mount(length = corner_length, thickness = corner_thickness, round_radius=corner_round_radius);
 
 
 
