@@ -83,4 +83,4 @@ peg_mount_positions = [
 
 // Example: TT motor mount cylinder
 // translate([50, 0, 0])
-  TT_motor_mount_show(d=5.2, h=15, hole_d=1.5, width=3.5, color_value=[0.8,0.4,0.4]);
+  TT_motor_mount(d=5.42, h=25, hole_d=2, width=3.65);
